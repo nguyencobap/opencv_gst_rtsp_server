@@ -5,9 +5,13 @@ gi.require_version('GstRtspServer', '1.0')
 from gi.repository import Gst, GstRtspServer, GObject
 from opencv_factory import OpenCVFactory
 from utils.log_utils import logger
+from utils.network_utils import NetworkUtils
+from exception.network_exception import PortAlreadyInUseException
 
 class OpenCVGstRTSPServer(GstRtspServer.RTSPServer):
     def __init__(self, stream_link: str, port: int, **properties):
+        if NetworkUtils.is_port_in_use(port=port):
+            raise PortAlreadyInUseException(port=port)
         super(OpenCVGstRTSPServer, self).__init__(**properties)
         self.factory = OpenCVFactory(stream_link=stream_link)
         self.factory.set_shared(True)
