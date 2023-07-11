@@ -4,10 +4,8 @@ from rtsp_server.opencv_rtsp_server import OpenCVRTSPServer
 
 class OpenCVFrameRTSPServer(OpenCVRTSPServer):
     def __init__(self, width: int, height: int, fps: int, port: int, endpoint: str = "/stream", **properties):
-        super(OpenCVFrameRTSPServer, self).__init__(port=port, **properties)
-        self.factory = OpenCVFrameMediaFactory(width=width, height=height, fps=fps)
-        self.factory.set_shared(True)
-        self.get_mount_points().add_factory(endpoint, self.factory)
+        factory = OpenCVFrameMediaFactory(width=width, height=height, fps=fps)
+        super(OpenCVFrameRTSPServer, self).__init__(factory=factory, endpoint=endpoint, port=port, **properties)
 
     def set_frame(self, frame):
         self.factory.set_frame(frame=frame)

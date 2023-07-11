@@ -13,13 +13,28 @@ class OpenCVRTSPServer(GstRtspServer.RTSPServer):
     thread: Thread = None
     main_loop: GObject.MainLoop = None
     factory: OpenCVMediaFactory = None
+    endpoint: str = "/stream"
+    port: int
 
-    def __init__(self, port: int, **properties):
+    def __init__(self, factory: OpenCVMediaFactory, port: int, endpoint: str = "/stream", **properties):
         super(OpenCVRTSPServer, self).__init__(**properties)
-        if NetworkUtils.is_port_in_use(port=port):
-            raise PortAlreadyInUseException(port=port)
-        self.set_service(str(port))
+        self.endpoint = endpoint
+        self.port = port
+        self.factory = factory
+
+        if NetworkUtils.is_port_in_use(port=self.port):
+            raise PortAlreadyInUseException(port=self.port)
+        self.set_service(str(self.port))
+
+        self.factory.set_shared(True)
+        self.get_mount_points().add_factory(self.endpoint, self.factory)
         self.attach(None)
+
+    def get_port(self) -> int:
+        return self.port
+    
+    def get_endpoint(self) -> str:
+        return self.endpoint
 
     def start(self):
         if self.main_loop is None or not self.main_loop.is_running():
