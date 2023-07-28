@@ -1,5 +1,5 @@
-from utils.log_utils import logger
-from rtsp_media_factory.opencv_media_factory import OpenCVMediaFactory
+from opencv_gst_rtsp_server.utils.log_utils import logger
+from opencv_gst_rtsp_server.rtsp_media_factory.opencv_media_factory import OpenCVMediaFactory
 import gi
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst

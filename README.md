@@ -22,10 +22,28 @@ Run setup_env.sh
 
 `source setup_env.sh`
 
+Run install
+
+`python3 -m pip install .`
+
 ### Run
 
-`python3 main_frame.py` or  `python3 main_stream.py`
+`python3 examples/main_frame.py` or  `python3 examples/main_stream.py`
 
 Play using ffplay or vlc:
 
 `ffplay -rtsp_transport tcp rtsp://localhost:8001/stream`
+
+### Build
+
+Install wheel:
+
+`python3 -m pip install wheel`
+
+Build:
+
+`python3 setup.py bdist_wheel`
+
+Install:
+
+`python3 -m pip install build/opencv_gst_rtsp_server-0.1.0-py3-none-any.whl`

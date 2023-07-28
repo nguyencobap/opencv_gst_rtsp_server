@@ -1,10 +1,9 @@
-import cv2
 import gi
 
 gi.require_version('Gst', '1.0')
 gi.require_version('GstRtspServer', '1.0')
 from gi.repository import Gst, GstRtspServer, GstRtsp
-from utils.log_utils import logger
+from opencv_gst_rtsp_server.utils.log_utils import logger
 from abc import abstractmethod
 
 class OpenCVMediaFactory(GstRtspServer.RTSPMediaFactory):

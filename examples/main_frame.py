@@ -1,7 +1,7 @@
-from rtsp_server.opencv_frame_rtsp_server import OpenCVFrameRTSPServer
+from opencv_gst_rtsp_server import OpenCVFrameRTSPServer
 import cv2
 
-capture = cv2.VideoCapture("rtsp://rtspstream.com/ball")    
+capture = cv2.VideoCapture("rtsp://admin:abcd1234@14.241.65.181")
 grabbed, frame = capture.read()
 fps = int(capture.get(cv2.CAP_PROP_FPS))
 fps = fps if  60 > fps > 0 else 30
