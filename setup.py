@@ -18,7 +18,7 @@ setup(
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
-        'Topic :: multimedia :: Video',
+        'Topic :: Multimedia :: Video',
         'License :: OSI Approved :: MIT License',  
         'Operating System :: POSIX :: Linux',        
         'Programming Language :: Python :: 3.8',
