@@ -1,3 +1,4 @@
+import time
 from opencv_gst_rtsp_server.utils.log_utils import logger
 from opencv_gst_rtsp_server.rtsp_media_factory.opencv_media_factory import OpenCVMediaFactory
 import gi
@@ -5,12 +6,14 @@ gi.require_version('Gst', '1.0')
 from gi.repository import Gst
 
 class OpenCVFrameMediaFactory(OpenCVMediaFactory):
-    def __init__(self, width: int, height: int, fps: int, **properties):
+    def __init__(self, width: int, height: int, fps: int, use_gpu: bool = False, use_h265: bool = False, **properties):
         super(OpenCVFrameMediaFactory, self).__init__(**properties)
         self.number_frames = 0
         self.width = width
         self.height = height
         self.fps = fps
+        self.use_gpu = use_gpu
+        self.use_h265 = use_h265
         self.frame = None
         self.duration = 1 / self.fps * Gst.SECOND  # duration of a frame in nanoseconds
         logger.debug(f"self.width = {self.width}, self.height = {self.height}, self.fps = {self.fps}, self.duration = {self.duration}")

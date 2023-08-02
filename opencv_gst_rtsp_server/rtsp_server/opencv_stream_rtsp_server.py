@@ -3,6 +3,6 @@ from opencv_gst_rtsp_server.rtsp_media_factory.opencv_stream_media_factory impor
 from opencv_gst_rtsp_server.rtsp_server.opencv_rtsp_server import OpenCVRTSPServer
 
 class OpenCVStreamRTSPServer(OpenCVRTSPServer):
-    def __init__(self, stream_link: str, port: int, endpoint: str = "/stream", **properties):
-        factory = OpenCVStreamMediaFactory(stream_link=stream_link)
+    def __init__(self, stream_link: str, port: int, endpoint: str = "/stream", use_gpu: bool = False, use_h265: bool = False, **properties):
+        factory = OpenCVStreamMediaFactory(stream_link=stream_link, use_gpu=use_gpu, use_h265=use_h265)
         super(OpenCVStreamRTSPServer, self).__init__(factory=factory, endpoint=endpoint, port=port, **properties)

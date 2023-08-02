@@ -8,13 +8,14 @@ from opencv_gst_rtsp_server.utils.log_utils import logger
 from opencv_gst_rtsp_server.rtsp_media_factory.opencv_media_factory import OpenCVMediaFactory
 
 class OpenCVStreamMediaFactory(OpenCVMediaFactory):
-    def __init__(self, stream_link: str, **properties):
+    def __init__(self, stream_link: str, use_gpu: bool = False, use_h265: bool = False, **properties):
         super(OpenCVStreamMediaFactory, self).__init__(**properties)
         if stream_link.isnumeric():
             self.stream_link = int(stream_link)
         else:
             self.stream_link = stream_link
-
+        self.use_gpu = use_gpu
+        self.use_h265 = use_h265
         self.cap = cv2.VideoCapture(self.stream_link)
 
         self.number_frames = 0
