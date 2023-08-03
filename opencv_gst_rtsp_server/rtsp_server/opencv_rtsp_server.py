@@ -8,6 +8,7 @@ from opencv_gst_rtsp_server.rtsp_media_factory.opencv_media_factory import OpenC
 from opencv_gst_rtsp_server.exception.network_exception import PortAlreadyInUseException
 from threading import Thread
 from opencv_gst_rtsp_server.utils.log_utils import logger
+from opencv_gst_rtsp_server.utils.thread_utils import ThreadUtilities
 
 class OpenCVRTSPServer(GstRtspServer.RTSPServer):
     thread: Thread = None
@@ -65,3 +66,11 @@ class OpenCVRTSPServer(GstRtspServer.RTSPServer):
             self.main_loop.quit()
         else:
             logger.debug("Main loop has already been quit")
+        
+        if self.thread:
+            try:
+                ThreadUtilities.async_raise(self.thread.ident)
+            except:
+                logger.error("Stop thread failed", exc_info=True)
+        else:
+            logger.debug("self.thread null")
