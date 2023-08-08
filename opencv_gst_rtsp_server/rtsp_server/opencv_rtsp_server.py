@@ -13,6 +13,7 @@ from opencv_gst_rtsp_server.utils.thread_utils import ThreadUtilities
 class OpenCVRTSPServer(GstRtspServer.RTSPServer):
     thread: Thread = None
     main_loop: GObject.MainLoop = None
+    server_id: int
     factory: OpenCVMediaFactory = None
     endpoint: str = "/stream"
     port: int
@@ -29,7 +30,6 @@ class OpenCVRTSPServer(GstRtspServer.RTSPServer):
 
         self.factory.set_shared(True)
         self.get_mount_points().add_factory(self.endpoint, self.factory)
-        self.attach(None)
 
     def get_port(self) -> int:
         return self.port
@@ -43,6 +43,7 @@ class OpenCVRTSPServer(GstRtspServer.RTSPServer):
             Gst.init(None)
 
             self.main_loop = GObject.MainLoop()
+            self.server_id = self.attach(self.main_loop.get_context())
             self.main_loop.run()
         else:
             logger.debug("Main loop has already been run")
@@ -67,6 +68,8 @@ class OpenCVRTSPServer(GstRtspServer.RTSPServer):
         else:
             logger.debug("Main loop has already been quit")
         
+        GObject.source_remove(self.server_id)
+
         if self.thread:
             try:
                 ThreadUtilities.async_raise(self.thread.ident)
