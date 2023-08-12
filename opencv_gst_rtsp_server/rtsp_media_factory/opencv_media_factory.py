@@ -10,7 +10,7 @@ class OpenCVMediaFactory(GstRtspServer.RTSPMediaFactory):
     width: int
     height: int
     fps: int 
-    number_frames: int = 0
+    frame_num_dict: dict = {}
     frame = None
     pipeline: Gst.Element = None 
     use_gpu: bool = False
@@ -51,8 +51,6 @@ class OpenCVMediaFactory(GstRtspServer.RTSPMediaFactory):
         return self.pipeline
 
     def do_configure(self, rtsp_media: GstRtspServer.RTSPMedia):
-        self.number_frames = 0
         appsrc = rtsp_media.get_element().get_child_by_name('source')
+        self.frame_num_dict[appsrc] = 0
         appsrc.connect('need-data', self.on_need_data)
-
-

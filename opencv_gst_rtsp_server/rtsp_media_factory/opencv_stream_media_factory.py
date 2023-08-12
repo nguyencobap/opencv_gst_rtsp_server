@@ -18,7 +18,6 @@ class OpenCVStreamMediaFactory(OpenCVMediaFactory):
         self.use_h265 = use_h265
         self.cap = cv2.VideoCapture(self.stream_link)
 
-        self.number_frames = 0
         self.width = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         self.width = self.width if self.width > 0 else 1920
 
@@ -40,12 +39,12 @@ class OpenCVStreamMediaFactory(OpenCVMediaFactory):
                 buf = Gst.Buffer.new_allocate(None, len(data), None)
                 buf.fill(0, data)
                 buf.duration = self.duration
-                timestamp = self.number_frames * self.duration
+                timestamp = self.frame_num_dict[src] * self.duration
                 buf.pts = buf.dts = int(timestamp)
                 buf.offset = timestamp
-                self.number_frames += 1
+                self.frame_num_dict[src] += 1
                 retval = src.emit('push-buffer', buf)
-                logger.debug('pushed buffer, frame {}, duration {} ns, durations {} s'.format(self.number_frames,
+                logger.debug('pushed buffer, frame {}, duration {} ns, durations {} s'.format(self.frame_num_dict[src],
                                                                                        self.duration,
                                                                                        self.duration / Gst.SECOND))
                 if retval != Gst.FlowReturn.OK:
