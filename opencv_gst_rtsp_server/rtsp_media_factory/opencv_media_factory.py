@@ -1,11 +1,15 @@
 import gi
 
 gi.require_version('Gst', '1.0')
+gi.require_version('GstRtsp', '1.0')
 gi.require_version('GstRtspServer', '1.0')
 from abc import abstractmethod
 
 from gi.repository import Gst, GstRtsp, GstRtspServer
 
+from opencv_gst_rtsp_server.exception.element_exception import \
+    ElementNotFoundException
+from opencv_gst_rtsp_server.utils.gst_utils import GstUtilities
 from opencv_gst_rtsp_server.utils.log_utils import logger
 
 
@@ -36,16 +40,32 @@ class OpenCVMediaFactory(GstRtspServer.RTSPMediaFactory):
             self.pipeline.set_state(Gst.State.NULL)
 
     def do_create_element(self, url: GstRtsp.RTSPUrl):
-        self.rtppay = 'rtph265pay config-interval=1 name=pay0 pt=102' if self.use_h265 else 'rtph264pay config-interval=1 name=pay0 pt=96'
-        self.videoconvert: str = 'nvvideoconvert ! video/x-raw(memory:NVMM),format=I420' if self.use_gpu else 'videoconvert ! video/x-raw,format=I420'
-
+        self.src_format = 'BGR' if self.channel == 3 else 'BGRx'
         if self.use_gpu:
+            if GstUtilities.is_element_exist(element_name='nvvideoconvert'):
+                gpu_videoconvert_element_name = 'nvvideoconvert'
+            elif GstUtilities.is_element_exist(element_name='nvvidconv'):
+                # NguyenNH: nvvidconv doesn't support 3 channel so have to use videoconvert to convert to 4 channel:
+                if self.channel == 3:
+                    gpu_videoconvert_element_name = 'videoconvert ! video/x-raw,format=BGRx ! nvvidconv'
+                else:
+                    gpu_videoconvert_element_name = 'nvvidconv'
+            else:
+                raise ElementNotFoundException(element_name='nvvideoconvert, nvvidconv')
+            
+            self.videoconvert: str = f'{gpu_videoconvert_element_name} ! video/x-raw(memory:NVMM),format=I420'
+            
             self.encoder: str = 'nvv4l2h265enc' if self.use_h265 else 'nvv4l2h264enc'
+            if not GstUtilities.is_element_exist(element_name=self.encoder):
+                raise ElementNotFoundException(element_name=self.encoder)
         else:
+            self.videoconvert: str = 'videoconvert ! video/x-raw,format=I420'
             self.encoder: str = 'x265enc' if self.use_h265 else 'x264enc'
-        self.format = 'BGR' if self.channel == 3 else 'BGRx'
+
+        self.rtppay = 'rtph265pay config-interval=1 name=pay0 pt=102' if self.use_h265 else 'rtph264pay config-interval=1 name=pay0 pt=96'
+
         self.launch_string = 'appsrc name=source is-live=true block=true format=GST_FORMAT_TIME ' \
-                    f'caps=video/x-raw,format={self.format},width={self.width},height={self.height},framerate={self.fps}/1 ' \
+                    f'caps=video/x-raw,format={self.src_format},width={self.width},height={self.height},framerate={self.fps}/1 ' \
                     f'! {self.videoconvert} ' \
                     f'! {self.encoder} ' \
                     f'! {self.rtppay} '

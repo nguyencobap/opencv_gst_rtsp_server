@@ -1,5 +1,6 @@
 import io
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 long_description = io.open("README.md", encoding="utf-8").read()
 
@@ -17,8 +18,8 @@ setup(
     long_description_content_type='text/markdown',
     keywords=['gstreamer', 'gst', 'opencv', 'rtsp'],
     install_requires=['opencv-python>=4.6.0.66',
-                        'pycairo>=1.24.0',
-                        'PyGObject>=3.44.1'
+                        'pycairo>=1.20.1',
+                        'PyGObject>=3.42.2'
                         ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
