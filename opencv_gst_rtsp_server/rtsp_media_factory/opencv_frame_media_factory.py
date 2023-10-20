@@ -4,11 +4,12 @@ import gi
 
 from opencv_gst_rtsp_server.rtsp_media_factory.opencv_media_factory import \
     OpenCVMediaFactory
-from opencv_gst_rtsp_server.utils.log_utils import logger
 
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst
 
+import logging
+logger = logging.getLogger(__name__)
 
 class OpenCVFrameMediaFactory(OpenCVMediaFactory):
     def __init__(self, width: int, height: int, fps: int, channel: int = 3, use_gpu: bool = False, use_h265: bool = False, **properties):

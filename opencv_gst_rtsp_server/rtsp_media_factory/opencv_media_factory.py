@@ -10,7 +10,9 @@ from gi.repository import Gst, GstRtsp, GstRtspServer
 from opencv_gst_rtsp_server.exception.element_exception import \
     ElementNotFoundException
 from opencv_gst_rtsp_server.utils.gst_utils import GstUtilities
-from opencv_gst_rtsp_server.utils.log_utils import logger
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 class OpenCVMediaFactory(GstRtspServer.RTSPMediaFactory):

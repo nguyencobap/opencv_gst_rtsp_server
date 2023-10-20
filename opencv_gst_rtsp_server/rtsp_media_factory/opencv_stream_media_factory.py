@@ -7,7 +7,9 @@ from gi.repository import Gst, GstRtsp, GstRtspServer
 
 from opencv_gst_rtsp_server.rtsp_media_factory.opencv_media_factory import \
     OpenCVMediaFactory
-from opencv_gst_rtsp_server.utils.log_utils import logger
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 class OpenCVStreamMediaFactory(OpenCVMediaFactory):
