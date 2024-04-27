@@ -1,9 +1,6 @@
-import time
-
 import gi
 
-from opencv_gst_rtsp_server.rtsp_media_factory.opencv_media_factory import \
-    OpenCVMediaFactory
+from .opencv_media_factory  import OpenCVMediaFactory
 
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst

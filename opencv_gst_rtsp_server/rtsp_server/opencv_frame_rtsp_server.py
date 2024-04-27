@@ -1,8 +1,6 @@
 
-from opencv_gst_rtsp_server.rtsp_media_factory.opencv_frame_media_factory import \
-    OpenCVFrameMediaFactory
-from opencv_gst_rtsp_server.rtsp_server.opencv_rtsp_server import \
-    OpenCVRTSPServer
+from ..rtsp_media_factory.opencv_frame_media_factory import OpenCVFrameMediaFactory
+from .opencv_rtsp_server import OpenCVRTSPServer
 
 
 class OpenCVFrameRTSPServer(OpenCVRTSPServer):

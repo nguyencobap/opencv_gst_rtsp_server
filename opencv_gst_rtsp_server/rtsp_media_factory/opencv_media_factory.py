@@ -7,9 +7,8 @@ from abc import abstractmethod
 
 from gi.repository import Gst, GstRtsp, GstRtspServer
 
-from opencv_gst_rtsp_server.exception.element_exception import \
-    ElementNotFoundException
-from opencv_gst_rtsp_server.utils.gst_utils import GstUtilities
+from ..exception.element_exception import ElementNotFoundException
+from ..utils.gst_utils import GstUtilities
 
 import logging
 logger = logging.getLogger(__name__)

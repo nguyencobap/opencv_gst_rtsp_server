@@ -3,11 +3,11 @@ import gi
 gi.require_version('Gst', '1.0')
 gi.require_version('GstRtspServer', '1.0')
 from gi.repository import Gst, GstRtspServer, GObject
-from opencv_gst_rtsp_server.utils.network_utils import NetworkUtils
-from opencv_gst_rtsp_server.rtsp_media_factory.opencv_media_factory import OpenCVMediaFactory
-from opencv_gst_rtsp_server.exception.network_exception import PortAlreadyInUseException
+from ..utils.network_utils import NetworkUtils
+from ..rtsp_media_factory.opencv_media_factory import OpenCVMediaFactory
+from ..exception.network_exception import PortAlreadyInUseException
 from threading import Thread
-from opencv_gst_rtsp_server.utils.thread_utils import ThreadUtilities
+from ..utils.thread_utils import ThreadUtilities
 
 import logging
 logger = logging.getLogger(__name__)
