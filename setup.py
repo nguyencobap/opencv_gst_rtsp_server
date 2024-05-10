@@ -6,7 +6,7 @@ long_description = io.open("README.md", encoding="utf-8").read()
 
 setup(
     name='opencv_gst_rtsp_server',
-    version='0.1.3',    
+    version='0.1.4',    
     description='Restream rtsp with opencv frame using gst-rtsp-server',
     url='https://github.com/nguyencobap/opencv_gst_rtsp_server',
     author='Nguyen Hai Nguyen',
